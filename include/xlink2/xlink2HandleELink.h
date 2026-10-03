@@ -48,12 +48,12 @@ public:
         }
     }
 
-    void setPosition(const sead::Vector3f& position)
+    void setPosition(const sead::Vector3f& position, f32 scale = 1.0f)
     {
         auto* event = static_cast<EventELink*>(getEvent());
         if (event && event->getCreateId() == getCreateId()) {
             event->mDelayEmitParam.position = position;
-            event->mDelayEmitParam.scale.set(1.0f, 1.0f, 1.0f);
+            event->mDelayEmitParam.scale.set(scale, scale, scale);
             event->mDelayEmitParam.flag1.setBit(2);
         }
     }
