@@ -33,6 +33,21 @@ public:
         }
     }
 
+    void kill()
+    {
+        auto* event = getEvent();
+        if (event && event->getCreateId() == getCreateId()) {
+            auto* user_instance = event->getUserInstance();
+            user_instance->checkAndErrorCallInCalc(
+                "HandleELink::kill(%s)",
+                solveOffset<char>(event->getAssetCallTable()->keyNamePos));
+            user_instance->printLogFadeOrKill(
+                getEvent(), "HandleELink::kill(%s)",
+                solveOffset<char>(getEvent()->getAssetCallTable()->keyNamePos));
+            getEvent()->kill();
+        }
+    }
+
     void setPosition(const sead::Vector3f& position)
     {
         auto* event = static_cast<EventELink*>(getEvent());
