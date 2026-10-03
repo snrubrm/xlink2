@@ -10,6 +10,7 @@ class Handle;
 
 namespace xlink2 {
 class AssetExecutorSLink;
+class HandleSLink;
 class EventSLink : public Event {
 public:
     ~EventSLink() override = default;
@@ -25,7 +26,10 @@ public:
     s32 getSoundHandle(sead::PtrArray<aal::Handle>*) const;
 
 private:
-    sead::BitFlag32 mBitFlag2 {0};
+    friend class HandleSLink;
+
+    alignas(4) sead::BitFlag16 mBitFlag2 {0};
+    sead::BitFlag16 mBitFlag3 {0};
     f32 mVolumeScale {1.0};
     f32 mVolumeTvScale {-1.0};
     f32 mPitchScale {1.0};

@@ -7,6 +7,7 @@ namespace xlink2 {
 void EventSLink::initializeImpl_() 
 {
     mBitFlag2.makeAllZero();
+    mBitFlag3.makeAllZero();
     mVolumeScale = 1.0;
     mVolumeTvScale = -1.0;
     mPitchScale = 1.0;

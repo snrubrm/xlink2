@@ -7,6 +7,7 @@
 
 namespace xlink2 {
 class AssetExecutorELink;
+class HandleELink;
 
 class EventELink : public Event {
 public:
@@ -57,6 +58,8 @@ public:
     UserInstanceELink* getUserInstanceELink() const { return static_cast<UserInstanceELink*>(mpUserInstance); }
 
 private:
+    friend class HandleELink;
+
     DelayEmitParam mDelayEmitParam;
 };
 static_assert(sizeof(EventELink) == 0x198, "xlink2::EventELink size mismatch");
