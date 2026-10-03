@@ -12,6 +12,9 @@ class Handle {
 public:
     Handle() = default;
     Handle(Handle&) = delete;
+    // User-provided (empty): handles returned by value and discarded are destroyed like objects with a
+    // non-trivial destructor.
+    ~Handle() {}
 
     Handle(UserInstance* user_instance, const char* asset_key_name)
     {
