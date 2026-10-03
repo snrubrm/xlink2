@@ -1,12 +1,8 @@
 #pragma once
 
-#include <prim/seadEnum.h>
+#include <aal/aalFadeCurveType.h>
 
 #include "xlink2/xlink2ResourceAccessor.h"
-
-namespace aal {
-SEAD_ENUM(FadeCurveType, Linear, Square, Sqrt, Sin);
-}
 
 namespace xlink2 {
 class ResourceAccessorSLink : public ResourceAccessor {
