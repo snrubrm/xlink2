@@ -2,6 +2,7 @@
 
 #include <basis/seadTypes.h>
 
+#include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2UserInstance.h"
 
@@ -35,6 +36,15 @@ public:
 
     Event* getEvent() { return static_cast<Event*>(mpResource); }
     s32 getCreateId() { return mCreateId; }
+
+    /// Whether the event is still the one this handle was created for (event slots are reused: an event
+    /// that was killed and replaced has a different create id). The fade / kill / setPosition / setMatrix
+    /// functions of the handles are guarded by the same test.
+    bool isActive()
+    {
+        auto* event = getEvent();
+        return event && event->getCreateId() == getCreateId();
+    }
 
     void reset()
     {
