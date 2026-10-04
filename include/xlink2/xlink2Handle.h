@@ -10,8 +10,9 @@ class Event;
 
 class Handle {
 public:
-    Handle() = default;
-    Handle(Handle&) = delete;
+    // User-provided: a function-local static handle is initialised at run time (guarded stores of the two
+    // fields), and handles are copied by value (eft::searchAndEmit{E,S}Link return a copy of such a static).
+    Handle() {}
     // User-provided (empty): handles returned by value and discarded are destroyed like objects with a
     // non-trivial destructor.
     ~Handle() {}
