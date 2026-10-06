@@ -83,7 +83,7 @@ s32 EventSLink::getSoundHandle(sead::PtrArray<aal::Handle>* handle_ptrs) const
         }
 
         if (executor.isAssetValid()) {
-            handle_ptrs->pushBack(reinterpret_cast<aal::Handle*>(executor_slink.getHandle()));
+            handle_ptrs->pushBack(executor_slink.getHandle());
             ++num_handle;
         }
     }

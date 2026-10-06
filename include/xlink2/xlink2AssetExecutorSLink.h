@@ -1,5 +1,6 @@
 #pragma once
 
+#include <aal/aalHandle.h>
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2HandleSLink.h"
 #include "xlink2/xlink2UserInstanceSLink.h"
@@ -48,14 +49,14 @@ public:
     void onFinalize_() override;
 
     UserInstanceSLink* getUserInstance() { return static_cast<UserInstanceSLink*>(mpUserInstance); }
-    HandleSLink* getHandle() { return &mHandle; }
+    aal::Handle* getHandle() { return &mHandle; }
 
 private:
     sead::BitFlag8 mBitFlag;
     u32 _8;
     ModelAssetConnection* mpModelAssetConnection;
     aal::Emitter* mpEmitter;
-    HandleSLink mHandle;
+    aal::Handle mHandle;
     sead::BitFlag16 mParamFlag;
     u16 _13;
     f32 mVolume;

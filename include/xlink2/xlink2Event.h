@@ -59,6 +59,7 @@ public:
 
     const sead::BitFlag32& getBitFlag() { return mBitFlag; }
     void setFlagBit(s32 bit) { mBitFlag.setBit(bit); }
+    void resetFlagBit(s32 bit) { mBitFlag.resetBit(bit); }
 
     sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() { return mAliveAssetExecutors; }
     const sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() const { return mAliveAssetExecutors; }
