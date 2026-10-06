@@ -6,7 +6,8 @@
 #include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
-MonoContainer::~MonoContainer() = default;
+// The body keeps the vtable pointer store of the destructor (a defaulted or empty destructor drops it).
+MonoContainer::~MonoContainer() { ; }
 
 bool MonoContainer::killOneTimeEvent()
 {

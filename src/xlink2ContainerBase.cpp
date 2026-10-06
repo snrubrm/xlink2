@@ -15,7 +15,8 @@ ContainerBase::ContainerBase()
     mpAssetCallTable = nullptr;
     mpEvent = nullptr;
 }
-ContainerBase::~ContainerBase() = default;
+// The body keeps the vtable pointer store of the destructor (a defaulted or empty destructor drops it).
+ContainerBase::~ContainerBase() { ; }
 
 bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table)
 {

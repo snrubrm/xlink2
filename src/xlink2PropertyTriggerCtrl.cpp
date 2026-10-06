@@ -45,8 +45,8 @@ PropertyTriggerCtrl::PropertyTriggerCtrl(UserInstance* user_instance,
     }
 }
 
-// NON-MATCHING
-PropertyTriggerCtrl::~PropertyTriggerCtrl() = default;
+// The body keeps the vtable pointer store of the destructor (a defaulted or empty destructor drops it).
+PropertyTriggerCtrl::~PropertyTriggerCtrl() { ; }
 
 void PropertyTriggerCtrl::reset() 
 {
