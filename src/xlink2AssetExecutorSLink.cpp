@@ -57,10 +57,7 @@ bool AssetExecutorSLink::isLoopEvent() const
 
 void AssetExecutorSLink::requestReEmit(bool check) 
 {
-    if (check)
-        mBitFlag.setBit(0);
-    else
-        mBitFlag.resetBit(0);
+    mBitFlag.changeBit(0, check);
 }
 
 bool AssetExecutorSLink::isRequestReEmit() const 

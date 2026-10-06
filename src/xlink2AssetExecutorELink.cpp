@@ -136,10 +136,7 @@ f32 AssetExecutorELink::setInnerParamBit_(ELinkAssetParamId param_id, ELinkEvent
 
 void AssetExecutorELink::requestReEmit(bool param1) 
 {
-    if (param1)
-        mBitFlag.setBit(5);
-    else
-        mBitFlag.resetBit(5);
+    mBitFlag.changeBit(5, param1);
 }
 
 bool AssetExecutorELink::isRequestReEmit() const 

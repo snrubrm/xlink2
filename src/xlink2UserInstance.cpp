@@ -122,6 +122,7 @@ void UserInstance::sleep()
 
 void UserInstance::setIsActive(bool is_active) 
 {
+    const bool is_inactive = !is_active;
     if (!(is_active ^ mBitFlag.isOnBit(1))) {
         if (is_active)
             mTriggerCtrlMgr.notifyActive();
@@ -129,13 +130,7 @@ void UserInstance::setIsActive(bool is_active)
             sleep();
         
 
-        // mBitFlag.changeBit(1, is_active);
-        u8 flag_bits = mBitFlag;
-        if (!is_active)
-            flag_bits |= 2;
-        else
-            flag_bits &= 253;
-        mBitFlag = flag_bits;
+        mBitFlag.changeBit(1, is_inactive);
     }
 }
 
