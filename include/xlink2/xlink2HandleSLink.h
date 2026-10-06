@@ -43,6 +43,17 @@ public:
         }
     }
 
+    /// Sets the volume scale of the event (inline-only in the original; requested for AscendingCurrentShieldable::calc_).
+    void setVolumeScale(f32 scale)
+    {
+        auto* event = static_cast<EventSLink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mVolumeScale = scale;
+            event->mBitFlag2.setBit(0);
+            event->mBitFlag3.setBit(0);
+        }
+    }
+
     void setMatrix(const sead::Matrix34f& matrix)
     {
         auto* event = static_cast<EventSLink*>(getEvent());

@@ -68,6 +68,29 @@ public:
         }
     }
 
+    /// Same as setMatrix(matrix), but with a scale vector (inline-only in the original: the event's delay emit parameter
+    /// gets the matrix and the scale, then flag1 bit 3).
+    void setMatrix(const sead::Matrix34f& matrix, const sead::Vector3f& scale)
+    {
+        auto* event = static_cast<EventELink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mDelayEmitParam.matrix34f = matrix;
+            event->mDelayEmitParam.scale = scale;
+            event->mDelayEmitParam.flag1.setBit(3);
+        }
+    }
+
+    /// Sets the delay emit parameter `_0xdc` and flag1 bit 21 (inline-only in the original; the name is a placeholder,
+    /// requested for MoonMove::calc_).
+    void setDelayEmitParam0xDC(s32 value)
+    {
+        auto* event = static_cast<EventELink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mDelayEmitParam._0xdc = value;
+            event->mDelayEmitParam.flag1.setBit(21);
+        }
+    }
+
     sead::Vector3f setMtxUp(const sead::Vector3f&, const sead::Vector3f&, f32);
     HandleELink* setMtxZ(const sead::Vector3f&, const sead::Vector3f&, f32);
 };
