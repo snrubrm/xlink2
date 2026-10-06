@@ -44,11 +44,13 @@ ModelTriggerConnection* TriggerCtrl::getModelTriggerConnection_(s32 idx)
     return nullptr;
 }
 
-// NON-MATCHING
 void TriggerCtrl::resetIsOnceCheck_() 
 {
-    for (s32 i {0}; i < mConnectionBuffer->size(); ++i)
-        mConnectionBuffer->get(i)->isActive = false;
+    if (mConnectionBuffer) {
+        const s32 size {mConnectionBuffer->size()};
+        for (s32 i {0}; i < size; ++i)
+            (*mConnectionBuffer)[i].isActive = false;
+    }
 }
 
 void TriggerCtrl::setBoneMatrixToConnection_(u32 overwrite_param_pos, ModelTriggerConnection* connection)

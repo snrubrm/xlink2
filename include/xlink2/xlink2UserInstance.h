@@ -131,7 +131,7 @@ public:
 
     void updateSortKey();
     const sead::Matrix34f* getPosForSort() const;
-    f32 getSortKey() const;
+    f32 getSortKey() const { return mBitFlag.isOnBit(1) ? INFINITY : mSortKey; }
     void getRootMtxForDrawText(sead::Matrix34f*);
 
     void printLogContainerSelect(const Event&, const char*, ...) const;

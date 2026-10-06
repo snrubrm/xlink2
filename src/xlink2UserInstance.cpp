@@ -803,16 +803,6 @@ void UserInstance::updateSortKey()
     }
 }
 
-f32 UserInstance::getSortKey() const
-{
-    auto* system {mUser->getSystem()};
-    auto* debug_op_param {&system->getDebugOperationParam()};
-    if (debug_op_param->getDebugUserFlag().isOffBit(25) && mBitFlag.isOnBit(1))
-        return INFINITY;
-
-    return mSortKey;
-}
-
 void UserInstance::printLogContainerSelect(const Event& /*unused*/, const char* /*unused*/, ...) const {}
 void UserInstance::printLogEmitFailed(const Event& /*unused*/, const char* /*unused*/, ...) const {}
 
