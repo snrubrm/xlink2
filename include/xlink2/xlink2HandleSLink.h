@@ -18,7 +18,7 @@ public:
         user_instance->searchAndHold(asset_key_name, this);
     }
 
-    void fade()
+    void fade(int frame = -1)
     {
         auto* event = getEvent();
         if (event && event->getCreateId() == getCreateId()) {
@@ -29,7 +29,7 @@ public:
             user_instance->printLogFadeOrKill(
                 getEvent(), "HandleSLink::fade(%s)",
                 solveOffset<char>(getEvent()->getAssetCallTable()->keyNamePos));
-            getEvent()->fade(-1);
+            getEvent()->fade(frame);
         }
     }
 
