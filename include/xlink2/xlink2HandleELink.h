@@ -18,6 +18,23 @@ public:
         user_instance->searchAndHold(asset_key_name, this);
     }
 
+    // Inline-only in the original; the debug string establishes the member name.
+    // Original 129864 and 7086f4 repeat the event/create-id check, logging and system fade.
+    void fadeIfLoopEffect()
+    {
+        auto* event = getEvent();
+        if (event && event->getCreateId() == getCreateId()) {
+            auto* user_instance = event->getUserInstance();
+            user_instance->checkAndErrorCallInCalc(
+                "HandleELink::fadeIfLoopEffect(%s)",
+                solveOffset<char>(event->getAssetCallTable()->keyNamePos));
+            user_instance->printLogFadeOrKill(
+                getEvent(), "HandleELink::fadeIfLoopEffect(%s)",
+                solveOffset<char>(getEvent()->getAssetCallTable()->keyNamePos));
+            getEvent()->fadeBySystem();
+        }
+    }
+
     void fade()
     {
         auto* event = getEvent();
