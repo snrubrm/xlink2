@@ -156,6 +156,11 @@ public:
     virtual bool doEventActivatingCallback_([[maybe_unused]] const Locator&);
     virtual void doEventActivatedCallback_([[maybe_unused]] const Locator&, [[maybe_unused]] Event*);
 
+    // Inline-only in the original; name is a guess. Client helpers 0x710105e100
+    // and 0x710105eac4 read +0x98; SLink's client interprets it as its SoundSource.
+    // The common base constructor clears the field at 0x7100bc9604.
+    void* getUserData() const { return mUserData; }
+
     User* getUser() const { return mUser; }
     UserResource* getUserResource() const { return mUser->getUserResource(); }
 
@@ -193,7 +198,7 @@ protected:
     sead::BitFlag64 mValueChangedBitfield;
     PropertyValueType* mPropertyValueArray {};
     TriggerCtrlMgr mTriggerCtrlMgr;
-    const char* mInstanceName {};  // mInstanceParamName?
+    void* mUserData {};  // Common client context; interpretation belongs to the client.
     u8 _0xA0[0x30];
     sead::BitFlag8 mBitFlag;
     sead::ListNode mListNode;
