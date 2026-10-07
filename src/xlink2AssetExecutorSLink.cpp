@@ -52,6 +52,11 @@ bool AssetExecutorSLink::isAssetValid() const
     return mHandle.isActive();
 }
 
+f32 AssetExecutorSLink::getPlayingTime() const
+{
+    return mHandle.getPlayingTime() * 1000.0f;
+}
+
 bool AssetExecutorSLink::isLoopEvent() const 
 {
     if (!mpAssetCallTable)

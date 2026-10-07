@@ -15,4 +15,5 @@ void LockProxy<T>::unlock()
 {
     mLock.unlock();
 }
+template class LockProxy<sead::SpinLock>;
 }  // namespace xlink2

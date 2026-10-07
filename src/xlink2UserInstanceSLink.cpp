@@ -5,6 +5,8 @@
 #include <xlink2/xlink2ILockProxy.h>
 #include <xlink2/xlink2SystemSLink.h>
 #include <xlink2/xlink2UserResourceSLink.h>
+#include <aal/aalArbiter.h>
+#include <aal/aalSystemAccessor.h>
 
 namespace xlink2 {
 UserInstanceSLink::CreateArgSLink::CreateArgSLink(const char* name, IUser* iuser)
@@ -41,6 +43,14 @@ void UserInstanceSLink::AssetLimiter::initialize(s32 param_idx, const char* grou
 }
 
 UserInstanceSLink::~UserInstanceSLink() = default;
+
+void UserInstanceSLink::onDestroy_()
+{
+    if (auto* emitter = mEmitter) {
+        aal::SystemAccessor::getArbiter()->freeEmitter(emitter);
+        mEmitter = nullptr;
+    }
+}
 
 HandleSLink UserInstanceSLink::searchAndEmit(const char* asset_key_name)
 {
