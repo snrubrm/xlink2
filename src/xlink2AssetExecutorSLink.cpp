@@ -46,6 +46,12 @@ void AssetExecutorSLink::updateParam_()
     applyParam_(false);
 }
 
+// 0x7100bd08dc
+bool AssetExecutorSLink::isAssetValid() const
+{
+    return mHandle.isActive();
+}
+
 bool AssetExecutorSLink::isLoopEvent() const 
 {
     if (!mpAssetCallTable)

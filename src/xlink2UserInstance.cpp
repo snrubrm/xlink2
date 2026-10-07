@@ -12,6 +12,20 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
+// 0x7100bc9550
+UserInstance::CreateArg::CreateArg(const char* name, IUser* user)
+    : userName(name), iUser(user), rootPos(nullptr), scale(nullptr), numActionSlot(0),
+      numLocalProperty(0), actionSlotNames(nullptr)
+{
+    rootMtx.setRawMtx(nullptr, 1);
+}
+
+// 0x7100bc956c
+UserInstance::RebuildArg::RebuildArg() : rootPos(nullptr), _18(nullptr)
+{
+    rootMtx.setRawMtx(nullptr, 1);
+}
+
 UserInstance::UserInstance(const CreateArg& create_arg, [[maybe_unused]] System* sys, User* user, sead::Heap* heap)
     : mUser(user), mIUser(create_arg.iUser), 
       mRootMtx(create_arg.rootMtx), mRootPos(create_arg.rootPos), 

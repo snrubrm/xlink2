@@ -39,7 +39,7 @@ public:
 
     class RebuildArg {
     public:
-        RebuildArg() = default;
+        RebuildArg();
 
         BoneMtx rootMtx;
         sead::Vector3f* rootPos;
