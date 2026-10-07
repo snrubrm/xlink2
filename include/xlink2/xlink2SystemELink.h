@@ -34,7 +34,7 @@ public:
     UserInstanceELink* createUserInstance(const UserInstance::CreateArg&, sead::Heap*, u32);
     UserResource* createUserResource(User*, sead::Heap*) override;
 
-    void allocHandle(sead::Heap* heap) override;
+    Handle* allocHandle(sead::Heap* heap) override;
     AssetExecutor* allocAssetExecutor(Event* event) override;
 
     u32 getResourceVersion() const override;

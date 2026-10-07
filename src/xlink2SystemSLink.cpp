@@ -1,7 +1,14 @@
 #include "xlink2/xlink2SystemSLink.h"
 #include "xlink2/xlink2UserResourceSLink.h"
 
+#include "xlink2/xlink2Handle.h"
+
 namespace xlink2 {
+
+Handle* SystemSLink::allocHandle(sead::Heap* heap) {
+    return new (heap, 8) Handle;
+}
+
 SystemSLink::SystemSLink() = default;
 
 SystemSLink::~SystemSLink()

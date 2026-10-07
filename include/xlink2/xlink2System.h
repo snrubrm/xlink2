@@ -25,6 +25,7 @@ class AssetExecutor;
 class EditorBuffer;
 class Event;
 class HoldMgr;
+class Handle;
 class IUser;
 class ParamDefineTable;
 class PropertyDefinition;
@@ -196,7 +197,7 @@ public:
     const DebugOperationParam& getDebugOperationParam() { return mIsOperationOREnabled ? mDebugOperationParamOR : mDebugOperationParamEditor; }
 
     virtual UserResource* createUserResource(User* user, sead::Heap* heap) = 0;
-    virtual void allocHandle(sead::Heap* heap) = 0;
+    virtual Handle* allocHandle(sead::Heap* heap) = 0;
     virtual u32 getUserParamNum() const = 0;
     virtual sead::SafeString* getModuleName() const = 0;
     virtual AssetExecutor* allocAssetExecutor(Event* event) = 0;

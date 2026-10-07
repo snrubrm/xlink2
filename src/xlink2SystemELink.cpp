@@ -2,7 +2,14 @@
 #include "xlink2/xlink2AssetExecutorELink.h"
 #include "xlink2/xlink2UserResourceELink.h"
 
+#include "xlink2/xlink2Handle.h"
+
 namespace xlink2 {
+
+Handle* SystemELink::allocHandle(sead::Heap* heap) {
+    return new (heap, 8) Handle;
+}
+
 UserInstanceELink* SystemELink::createUserInstance(const UserInstance::CreateArg& arg, sead::Heap* heap, u32 i1)
 {
     {

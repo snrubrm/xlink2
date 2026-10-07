@@ -1,4 +1,5 @@
 target_sources(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}HoldMgr.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ActionTriggerCtrl.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}AlwaysTriggerCtrl.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}AssetExecutor.cpp

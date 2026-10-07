@@ -33,7 +33,7 @@ public:
                                           sead::Heap* heap, u32 i1);
     UserResource* createUserResource(User* user, sead::Heap* heap) override;
 
-    void allocHandle(sead::Heap* heap) override;
+    Handle* allocHandle(sead::Heap* heap) override;
     AssetExecutor* allocAssetExecutor(Event* event) override;
 
     u32 getResourceVersion() const override;

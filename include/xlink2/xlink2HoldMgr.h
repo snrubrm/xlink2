@@ -15,7 +15,6 @@ public:
         Handle handle;
         UserInstance* userInstance;
         s32 _0;
-        sead::ListNode listNode;
     };
 
     u32 searchAndHold(const char*, Handle*, UserInstance*);
@@ -33,9 +32,8 @@ public:
 private:
     System* mSystem;
     sead::CriticalSection mCriticalSection;
-    sead::ObjList<HoldAssetInfo> mHoldAssetInfoList;
-    HoldAssetInfo mHoldAssetInfos[128];
-    u8 _0;
+    sead::FixedObjList<HoldAssetInfo, 128> mHoldAssetInfoList;
+    bool mEnabled;
 };
 static_assert(sizeof(HoldMgr) == 0x1888, "xlink2::HoldMgr size mismatch");
 
