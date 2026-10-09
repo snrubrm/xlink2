@@ -171,6 +171,8 @@ public:
 
     const IUser* getIUser() const { return mIUser; }
 
+    // Native SLink client traversals 0x71012305ac / 0x7101230968 mutate the events' handles.
+    sead::OffsetList<Event>* getEventList() { return &mEventList; }
     const sead::OffsetList<Event>* getEventList() const { return &mEventList; }
 
     const BoneMtx& getRootMtx() { return mRootMtx; }
