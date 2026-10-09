@@ -27,7 +27,10 @@ public:
 
     virtual f32 getSortKey(const sead::Vector3f&) const = 0;
 
-    virtual sead::Matrix34f* getAutoInputMtxSource() const = 0;
+    // Slot 13 returns a matrix by value. Independent user vtables
+    // 0x710247F440 and 0x71025168B0 use 0x71009CFF60 and 0x710123DD04;
+    // both return 48 bytes, from Matrix34f::ident or its initialized copy.
+    virtual sead::Matrix34f getAutoInputMtxSource() const = 0;
 
     void getBoneWorldMtx(const char*, sead::Matrix34f*) const;
     virtual sead::Matrix34f getMtxCorrectingDrawBone() const;
