@@ -8,6 +8,10 @@
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserInstanceParam.h"
 
+namespace ksys::xlink {
+class XLink;
+}
+
 namespace xlink2 {
 class Event;
 class ParamDefineTable;
@@ -188,6 +192,9 @@ public:
 protected:
     friend User;
     friend TriggerCtrlMgr;
+    // Native XLink::prepareDelete 0x710123052C directly sets bit 3 in
+    // both owned user instances' typed flags at +0xd0 after fading them.
+    friend class ksys::xlink::XLink;
 
     sead::OffsetList<Event> mEventList;
     sead::SafeArray<UserInstanceParam*, 2> mParams;
