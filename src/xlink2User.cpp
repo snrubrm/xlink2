@@ -166,9 +166,13 @@ f32 User::getMinSortKey() const
 
 UserInstance* User::getMinSortKeyInstance()
 {
+    if (mUserInstanceList.begin() == mUserInstanceList.end())
+        return nullptr;
     f32 min_sort_key {sead::MathCalcCommon<f32>::infinity()};
     UserInstance* min_sort_key_instance {};
     for (auto& user_instance : mUserInstanceList) {
+        if (user_instance.getBitFlag().isOnBit(1))
+            continue;
         f32 sort_key = user_instance.getSortKey();
         if (sort_key < min_sort_key) {
             min_sort_key = sort_key;
