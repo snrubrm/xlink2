@@ -6,17 +6,15 @@
 namespace xlink2 {
 RandomContainer::~RandomContainer() = default;
 
-// WIP
+// NON_MATCHING: the final return shares the child result register in the original.
 bool RandomContainer::calc()
 {
-    auto* child {mpChild};
-    bool result {child->calc()};
-    if (result != CalcResult::Failure) {
-        child->destroy();
+    if (mpChild->calc()) {
+        mpChild->destroy();
         mpChild = nullptr;
         return assetFinished();
     }
-    return CalcResult(!result);
+    return false;
 }
 
 bool RandomContainer::start()

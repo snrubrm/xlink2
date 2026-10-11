@@ -9,19 +9,19 @@
 namespace xlink2 {
 SequenceContainer::~SequenceContainer() = default;
 
-// WIP
+// NON_MATCHING: start-return normalization and the shared return register differ.
 bool SequenceContainer::calc()
 {
     if (mpChild->calc() & CalcResult::Success) {
         mpChild->destroy();
         mpChild = nullptr;
         if (mpEvent->getBitFlag().isOnBit(4) || !callNextChildSequence_())
-            return CalcResult(assetFinished());
+            return assetFinished();
     
         return false;
     }  
 
-    return true;
+    return false;
 }
 
 bool SequenceContainer::callNextChildSequence_()
