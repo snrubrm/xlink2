@@ -5,7 +5,7 @@
 namespace xlink2 {
 SwitchContainer::~SwitchContainer() = default;
 
-// NON-MATCHING
+// NON_MATCHING: child-state loads and the shared completion return differ.
 bool SwitchContainer::calc()
 {
     bool check1 {false};
@@ -15,8 +15,7 @@ bool SwitchContainer::calc()
         bool bit_3_on {mpEvent->getBitFlag().isOnBit(3)};
         check1 = need_observe && !bit_3_on;
 
-        // if goes here, not sure on the order of checks, so it's left out for now
-        {
+        if (check1) {
             auto* asset_ctb {getConditionMatchChildCallTable_()};
             if (mpChild != nullptr) {
                 if (mpChild->getAssetCallTable() != asset_ctb) {
