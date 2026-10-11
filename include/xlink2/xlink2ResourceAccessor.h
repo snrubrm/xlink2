@@ -195,7 +195,10 @@ protected:
     System* mpSystem;
 };
 
-class ResourceAccessor2 : public ResourceAccessor {
+// BD00A4 and independent BCE8E8/BCF5C4 stack producers establish the complete
+// nonpolymorphic 0x28 object. It borrows an instance/resource rather than
+// inheriting ResourceAccessor's vtable and resource members.
+class ResourceAccessor2 {
 public:
     ResourceAccessor2(const UserInstance*, const ResAssetCallTable&, s32, u64);
 
@@ -208,15 +211,16 @@ public:
 
     f32 getCurveValue_(const ResParam&) const;
 
-    s32 getValue_(const ResParam&) const;
+    f32 getValue_(const ResParam&) const;
 
 private:
     const UserInstance* mpUserInstance;
     const UserResource* mpUserResource;
     const ResAssetCallTable* mpAssetCallTable;
-    void* _0;
+    const ResTriggerOverwriteParam* mpOverwriteParam;
     s32 mParamValue;
-    u8 _2;
+    bool mNeedObserve;
 };
+static_assert(sizeof(ResourceAccessor2) == 0x28, "ResourceAccessor2 size mismatch");
 
 }  // namespace xlink2

@@ -3,8 +3,71 @@
 #include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2ResourceAccessorSLink.h"
 #include "xlink2/xlink2UserResourceSLink.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
+
+ResourceAccessor2::ResourceAccessor2(const UserInstance* instance, const ResAssetCallTable& table,
+                                   s32 param_index, u64 overwrite_pos)
+    : mpUserInstance(instance), mpUserResource(instance->getUserResource()), mpAssetCallTable(&table),
+      mpOverwriteParam(nullptr), mParamValue(0), mNeedObserve(false)
+{
+    const auto* asset_param = solveOffset<ResAssetParam>(table.paramStartPos);
+    if (asset_param->mask.isOnBit(param_index)) {
+        const auto& param = asset_param->params[asset_param->mask.countRightOnBit(param_index) - 1];
+        mParamValue = mpUserResource->getParam()->pCommonResourceParam->directValueTable[param.getValue()];
+    }
+    const auto* resource_param = mpUserResource->getParam();
+    const auto table_index = &table - resource_param->userBinParam.pResAssetCallTable;
+    mNeedObserve = resource_param->callTableParamBuffer[table_index].bitFlag.isOnBit(1);
+    if (u32(overwrite_pos) != 0)
+        mpOverwriteParam = solveOffset<ResTriggerOverwriteParam>(overwrite_pos);
+}
+
+// NON_MATCHING: shared distribution dispatch groups the exponent cases differently.
+f32 ResourceAccessor2::getValue_(const ResParam& param) const
+{
+    const auto type = param.getRefType();
+    f32 exponent;
+    switch (type) {
+    case ValueReferenceType::Direct:
+        return sead::BitUtil::bitCast<f32>(
+            mpUserResource->getParam()->pCommonResourceParam->directValueTable[param.getValue()]);
+    case ValueReferenceType::Curve:
+        return getCurveValue_(param);
+    case ValueReferenceType::Random:
+        return getRandomValue_(*getResRandomCallTable_(param));
+    case ValueReferenceType::Random2Pow:
+    case ValueReferenceType::Random2PowWeightMin:
+    case ValueReferenceType::Random2PowWeightMax:
+        exponent = 2.0f;
+        break;
+    case ValueReferenceType::Random3Pow:
+    case ValueReferenceType::Random3PowWeightMin:
+    case ValueReferenceType::Random3PowWeightMax:
+        exponent = 3.0f;
+        break;
+    case ValueReferenceType::Random4Pow:
+    case ValueReferenceType::Random4PowWeightMin:
+    case ValueReferenceType::Random4PowWeightMax:
+        exponent = 4.0f;
+        break;
+    case ValueReferenceType::Random1Point5Pow:
+    case ValueReferenceType::Random1Point5PowWeightMin:
+    case ValueReferenceType::Random1Point5PowWeightMax:
+        exponent = 1.5f;
+        break;
+    default:
+        return 0.0f;
+    }
+    const auto& table = *getResRandomCallTable_(param);
+    if (type <= ValueReferenceType::Random1Point5Pow)
+        return getRandomValue_(table, exponent);
+    if (type <= ValueReferenceType::Random1Point5PowWeightMin)
+        return getRandomValueWeightMin_(table, exponent);
+    return getRandomValueWeightMax_(table, exponent);
+}
+
 AssetExecutorSLink::~AssetExecutorSLink() = default;
 
 void AssetExecutorSLink::updateParam_()

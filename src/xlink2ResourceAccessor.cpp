@@ -1,12 +1,109 @@
 #include <cstdarg>
+#include <limits>
 #include <math/seadMathCalcCommon.h>
 
 #include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2Util.h"
+#include "xlink2/xlink2PropertyDefinition.h"
 
 namespace xlink2 {
+
+ResRandomCallTable* ResourceAccessor2::getResRandomCallTable_(const ResParam& param) const
+{
+    return &mpUserResource->getParam()->pCommonResourceParam->randomCallTable[param.getValue()];
+}
+
+f32 ResourceAccessor2::getRandomValue_(const ResRandomCallTable& table) const
+{
+    return mpUserResource->getSystem()->getRandom()->getF32Range(table.minValue, table.maxValue);
+}
+
+// NON_MATCHING: result registers and conditional-select normalization differ.
+f32 ResourceAccessor2::getRandomValue_(const ResRandomCallTable& table, f32 exponent) const
+{
+    auto* random = mpUserResource->getSystem()->getRandom();
+    const f32 range = sead::Mathf::abs(table.maxValue - table.minValue);
+    const f32 value = random->getF32Range(-1.0f, 1.0f);
+    const f32 power = sead::Mathf::pow(sead::Mathf::abs(value), exponent);
+    const f32 half_range = range * 0.5f;
+    return table.minValue + half_range + (value >= 0.0f ? power * half_range : -power * half_range);
+}
+
+f32 ResourceAccessor2::getRandomValueWeightMin_(const ResRandomCallTable& table, f32 exponent) const
+{
+    auto* random = mpUserResource->getSystem()->getRandom();
+    const f32 range = sead::Mathf::abs(table.maxValue - table.minValue);
+    return sead::Mathf::pow(random->getF32Range(0.0f, 1.0f), exponent) * range + table.minValue;
+}
+
+f32 ResourceAccessor2::getRandomValueWeightMax_(const ResRandomCallTable& table, f32 exponent) const
+{
+    auto* random = mpUserResource->getSystem()->getRandom();
+    const f32 range = sead::Mathf::abs(table.maxValue - table.minValue);
+    return (1.0f - sead::Mathf::pow(random->getF32Range(0.0f, 1.0f), exponent)) * range + table.minValue;
+}
+
+// NON_MATCHING: property lookup branches and signed-index registers differ.
+f32 ResourceAccessor2::getCurveValue_(const ResParam& param) const
+{
+    const auto& curve = mpUserResource->getParam()->pCommonResourceParam->curveCallTable[param.getValue()];
+    f32 result = std::numeric_limits<f32>::infinity();
+    if (curve.propIdx < 0)
+        return result;
+
+    s32 index = curve.localPropertyNameIdx;
+    const PropertyDefinition* definition;
+    PropertyValueType value;
+    if (curve.isPropGlobal == 1) {
+        if (index < 0)
+            return result;
+        const auto* system = mpUserInstance->getUser()->getSystem();
+        definition = system->getPropertyDefinition(index);
+        if (definition)
+            value = system->getPropertyValue(index);
+    } else {
+        index = mpUserResource->getParam()->localPropertyIdxBuffer[index];
+        if (index < 0)
+            return result;
+        definition = mpUserInstance->getUser()->getPropertyDefinition(index);
+        if (definition)
+            value = mpUserInstance->getPropertyValue(index);
+    }
+    if (!definition)
+        return result;
+
+    const f32 input = definition->getType() == PropertyType::F32 ? value.valueFloat : f32(value.valueInt);
+    const auto* points = mpUserResource->getParam()->pCommonResourceParam->curvePointTable;
+    if (!points)
+        return result;
+    points += curve.curvePointStartPos;
+    if (!points)
+        return result;
+
+    if (curve.numPoint != 0 && curve.curveType == 0) {
+        for (s32 i = 0; i < curve.numPoint; ++i) {
+            if (input == points[i].x) {
+                result = points[i].y;
+                break;
+            }
+            if (input < points[i].x) {
+                result = points[i].y;
+                if (i != 0) {
+                    const auto& previous = points[i - 1];
+                    result = previous.y + (input - previous.x) *
+                             ((points[i].y - previous.y) / (points[i].x - previous.x));
+                }
+                break;
+            }
+        }
+    }
+    if (result == std::numeric_limits<f32>::infinity())
+        result = points[curve.numPoint - 1].y;
+    return result;
+}
+
 const ResAssetCallTable* ResourceAccessor::searchCallTable(const char* name) const
 {
     if (mpUserResource && mpSystem->isCallEnabled()) {

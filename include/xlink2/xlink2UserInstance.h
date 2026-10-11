@@ -181,7 +181,7 @@ public:
 
     const BoneMtx& getRootMtx() { return mRootMtx; }
 
-    PropertyValueType getPropertyValue(u32 idx) { return mPropertyValueArray[idx]; }
+    PropertyValueType getPropertyValue(u32 idx) const { return mPropertyValueArray[idx]; }
 
     void updateGlobalPropertyTriggerCtrl()
     {
