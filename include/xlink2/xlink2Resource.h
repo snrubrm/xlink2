@@ -213,7 +213,10 @@ static_assert(sizeof(ResCondition) == 0x4, "xlink2::ResCondition size mismatch")
 struct ResSwitchCondition : public ResCondition {
     PropertyType propertyType;
     CompareType compareType;
-    s32 value;
+    union {
+        s32 value;
+        f32 valueFloat;
+    };
     s16 localPropertyEnumNameIdx;
     bool isSolved;
     bool isGlobal;

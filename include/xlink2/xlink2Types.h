@@ -9,12 +9,12 @@ enum class ClipType {
 };
 
 enum class CompareType : s32 {
-    NotEqual,
-    LessThanOrEqual,
-    LessThan,
-    GreaterThanOrEqual,
-    GreaterThan,
     Equal,
+    GreaterThan,
+    GreaterThanOrEqual,
+    LessThan,
+    LessThanOrEqual,
+    NotEqual,
 };
 
 enum ContainerType {

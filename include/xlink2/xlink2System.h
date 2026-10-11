@@ -194,6 +194,10 @@ public:
     const PropertyDefinition* getPropertyDefinition(u32 idx) const { return mGlobalPropertyDefinitions[idx]; }
     PropertyValueType getPropertyValue(u32 idx) const { return mGlobalPropertyValues[idx]; }
 
+    // inline-only in the original; name is a guess. SwitchContainer BC64A0 and
+    // PropertyTriggerCtrl BD2DA0 borrow this array before examining conditions.
+    const PropertyValueType* getPropertyValues() const { return mGlobalPropertyValues; }
+
     const DebugOperationParam& getDebugOperationParam() { return mIsOperationOREnabled ? mDebugOperationParamOR : mDebugOperationParamEditor; }
 
     virtual UserResource* createUserResource(User* user, sead::Heap* heap) = 0;

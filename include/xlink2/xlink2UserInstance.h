@@ -183,6 +183,10 @@ public:
 
     PropertyValueType getPropertyValue(u32 idx) const { return mPropertyValueArray[idx]; }
 
+    // inline-only in the original; name is a guess. SwitchContainer BC64A0 and
+    // PropertyTriggerCtrl BD2DA0 borrow this array before examining conditions.
+    const PropertyValueType* getPropertyValues() const { return mPropertyValueArray; }
+
     void updateGlobalPropertyTriggerCtrl()
     {
         if (mBitFlag.isOffBit(1))

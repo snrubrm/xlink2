@@ -1,5 +1,7 @@
 #include "xlink2/xlink2SwitchContainer.h"
 #include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2PropertyDefinition.h"
+#include "xlink2/xlink2ResourceUtil.h"
 #include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
@@ -47,6 +49,140 @@ bool SwitchContainer::calc()
     }
 
     return !check1 && check2;
+}
+
+// NON_MATCHING: property-index load ordering and register allocation differ.
+const ResAssetCallTable* SwitchContainer::getConditionMatchChildCallTable_()
+{
+    auto* instance = mpEvent->getUserInstance();
+    auto* param = static_cast<ResSwitchContainerParam*>(ResourceUtil::getResContainerParam(*mpAssetCallTable));
+    s32 index = param->localPropertyNameIdx;
+    const PropertyDefinition* definition;
+    const PropertyValueType* values;
+    if (param->isGlobal) {
+        if (index < 0)
+            return nullptr;
+        definition = instance->getUser()->getSystem()->getPropertyDefinition(index);
+        values = instance->getUser()->getSystem()->getPropertyValues();
+    } else {
+        if (index < 0)
+            return nullptr;
+        index = instance->getUser()->getUserResource()->getParam()->localPropertyIdxBuffer[index];
+        if (index < 0)
+            return nullptr;
+        definition = instance->getUser()->getPropertyDefinition(index);
+        values = instance->getPropertyValues();
+    }
+    if (!definition)
+        return nullptr;
+
+    auto* resource = instance->getUser()->getUserResource();
+    for (s32 i = param->childrenStartIndex; i <= param->childrenEndIndex; ++i) {
+        auto* table = resource->getAssetCallTableItem(i);
+        if (table->conditionPos == 0)
+            return table;
+
+        switch (definition->getType()) {
+        case PropertyType::Enum: {
+            auto* condition = solveOffset<ResSwitchCondition>(table->conditionPos);
+            const s32 value = values[index].valueInt;
+            const s32 expected = param->isGlobal ? condition->localPropertyEnumNameIdx :
+                                                  resource->getParam()->callTableParamBuffer[i].assetId;
+            switch (condition->compareType) {
+            case CompareType::Equal:
+                if (value == expected)
+                    return table;
+                break;
+            case CompareType::GreaterThan:
+                if (value > expected)
+                    return table;
+                break;
+            case CompareType::GreaterThanOrEqual:
+                if (value >= expected)
+                    return table;
+                break;
+            case CompareType::LessThan:
+                if (value < expected)
+                    return table;
+                break;
+            case CompareType::LessThanOrEqual:
+                if (value <= expected)
+                    return table;
+                break;
+            case CompareType::NotEqual:
+                if (value != expected)
+                    return table;
+                break;
+            }
+            break;
+        }
+        case PropertyType::S32: {
+            auto* condition = solveOffset<ResSwitchCondition>(table->conditionPos);
+            const s32 value = values[index].valueInt;
+            const s32 expected = condition->value;
+            switch (condition->compareType) {
+            case CompareType::Equal:
+                if (value == expected)
+                    return table;
+                break;
+            case CompareType::GreaterThan:
+                if (value > expected)
+                    return table;
+                break;
+            case CompareType::GreaterThanOrEqual:
+                if (value >= expected)
+                    return table;
+                break;
+            case CompareType::LessThan:
+                if (value < expected)
+                    return table;
+                break;
+            case CompareType::LessThanOrEqual:
+                if (value <= expected)
+                    return table;
+                break;
+            case CompareType::NotEqual:
+                if (value != expected)
+                    return table;
+                break;
+            }
+            break;
+        }
+        case PropertyType::F32: {
+            auto* condition = solveOffset<ResSwitchCondition>(table->conditionPos);
+            const f32 value = values[index].valueFloat;
+            const f32 expected = condition->valueFloat;
+            switch (condition->compareType) {
+            case CompareType::Equal:
+                if (value == expected)
+                    return table;
+                break;
+            case CompareType::GreaterThan:
+                if (value > expected)
+                    return table;
+                break;
+            case CompareType::GreaterThanOrEqual:
+                if (value >= expected)
+                    return table;
+                break;
+            case CompareType::LessThan:
+                if (value < expected)
+                    return table;
+                break;
+            case CompareType::LessThanOrEqual:
+                if (value <= expected)
+                    return table;
+                break;
+            case CompareType::NotEqual:
+                if (value != expected)
+                    return table;
+                break;
+            }
+            break;
+        }
+        }
+    }
+    return nullptr;
 }
 
 bool SwitchContainer::start_(const ResAssetCallTable* asset_ctb)
