@@ -5,6 +5,19 @@
 
 namespace xlink2 {
 
+SystemSLink* SystemSLink::sInstance = nullptr;
+SystemSLink::SingletonDisposer_* SystemSLink::SingletonDisposer_::sStaticDisposer = nullptr;
+
+SystemSLink::SingletonDisposer_::~SingletonDisposer_() {
+    if (this == sStaticDisposer) {
+        sStaticDisposer = nullptr;
+        SystemSLink::sInstance->~SystemSLink();
+        SystemSLink::sInstance = nullptr;
+    }
+}
+
+SEAD_CREATE_SINGLETON_INSTANCE(SystemSLink)
+
 Handle* SystemSLink::allocHandle(sead::Heap* heap) {
     return new (heap, 8) Handle;
 }
