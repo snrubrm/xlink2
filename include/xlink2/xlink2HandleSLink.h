@@ -71,6 +71,17 @@ public:
         }
     }
 
+    /// Sets the low-pass filter scale of the event (inline-only in the original; name is a guess.
+    /// ksys::snd 0x710100064c and 0x7101000838 store EventSLink +0xa8 and set bit 3 of both flag words).
+    void setLpfScale(f32 scale)
+    {
+        auto* event = static_cast<EventSLink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mLpfScale = scale;
+            event->mBitFlag2.setBit(3);
+            event->mBitFlag3.setBit(3);
+        }
+    }
     void setMatrix(const sead::Matrix34f& matrix)
     {
         auto* event = static_cast<EventSLink*>(getEvent());
