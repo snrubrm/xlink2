@@ -108,6 +108,29 @@ public:
         }
     }
 
+    /// Sets the delay emit parameter `_0x78` (with `_0x74` = 1) and flag1 bit 10 (inline-only in the original; the
+    /// name is a placeholder, requested for GameSceneSubsys5 0x7100905f9c).
+    void setDelayEmitParam0x78(f32 value)
+    {
+        auto* event = static_cast<EventELink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mDelayEmitParam._0x74 = 1.0f;
+            event->mDelayEmitParam._0x78 = value;
+            event->mDelayEmitParam.flag1.setBit(10);
+        }
+    }
+
+    /// Stores `value` at +0x18 of the delay emit parameter's `_0xf8` object, if there is one (inline-only in the
+    /// original; placeholder name, requested for GameSceneSubsys5 0x7100905f9c).
+    void setDelayEmitParamF8Value(f32 value)
+    {
+        auto* event = static_cast<EventELink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            if (event->mDelayEmitParam._0xf8)
+                event->mDelayEmitParam._0xf8->_18 = value;
+        }
+    }
+
     sead::Vector3f setMtxUp(const sead::Vector3f&, const sead::Vector3f&, f32);
     HandleELink* setMtxZ(const sead::Vector3f&, const sead::Vector3f&, f32);
 };

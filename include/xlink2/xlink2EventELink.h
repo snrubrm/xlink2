@@ -13,6 +13,12 @@ class EventELink : public Event {
 public:
     ~EventELink() override = default;
 
+    // Pointee of DelayEmitParam::_0xf8 (placeholder): GameSceneSubsys5 0x7100905f9c stores a float at +0x18.
+    struct DelayEmitParamUnkF8 {
+        u8 _0[0x18];
+        f32 _18;
+    };
+
     struct DelayEmitParam {
         sead::Color4f color;
         sead::Vector3f position;
@@ -21,7 +27,11 @@ public:
         void* _4;
         u32 _5;
         f32 emissionIntervalScale;
-        u8 _0x68[24];
+        u8 _0x68[12];
+        // Set together with flag1 bit 10 by GameSceneSubsys5 0x7100905f9c (1.0 and its argument).
+        f32 _0x74;
+        f32 _0x78;
+        u8 _0x7c[4];
         f32 directionalVel;
         u8 _0x84[44];
         sead::Color4f color0;
@@ -34,7 +44,7 @@ public:
         sead::BitFlag32 flag1;
         sead::BitFlag32 flag2;
         u8 _0xf0;
-        void* _0xf8;
+        DelayEmitParamUnkF8* _0xf8;
 
     };
     static_assert(sizeof(DelayEmitParam) == 0x100, "'xlink2::EventELink::DelayEmitParam' size mismatch");
