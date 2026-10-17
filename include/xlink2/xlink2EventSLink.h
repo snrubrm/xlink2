@@ -8,6 +8,8 @@ namespace aal {
 class Handle;
 }
 
+namespace uking::action { class XLinkEventCreateAction; }
+
 namespace xlink2 {
 class AssetExecutorSLink;
 class HandleSLink;
@@ -27,6 +29,9 @@ public:
 
 private:
     friend class HandleSLink;
+    // XLinkEventCreateAction::oneShot_ 0x7100d35e2c writes mBitFlag2 bit 8, mPosition and
+    // mBitFlag3 bit 8 in that order (event +0x98 / +0xbc..+0xc4 / +0x9a).
+    friend class uking::action::XLinkEventCreateAction;
 
     alignas(4) sead::BitFlag16 mBitFlag2 {0};
     sead::BitFlag16 mBitFlag3 {0};

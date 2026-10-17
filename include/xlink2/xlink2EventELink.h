@@ -5,6 +5,8 @@
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2UserInstanceELink.h"
 
+namespace uking::action { class XLinkEventCreateAction; }
+
 namespace xlink2 {
 class AssetExecutorELink;
 class HandleELink;
@@ -72,6 +74,9 @@ public:
 
 private:
     friend class HandleELink;
+    // XLinkEventCreateAction::oneShot_ 0x7100d35e2c ORs 0x10 into the word at +0x20 of the
+    // object stored in DelayEmitParam::_0xf8 (event +0x190).
+    friend class uking::action::XLinkEventCreateAction;
 
     DelayEmitParam mDelayEmitParam;
 };
