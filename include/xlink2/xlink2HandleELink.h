@@ -131,6 +131,17 @@ public:
         }
     }
 
+    /// Sets the delay emit colour alpha and flag1 bit 1 (inline-only in the original: StasisMgr
+    /// 0x710067ffbc stores it at the event's +0xa4 and ORs 2 into the word at +0x180).
+    void setDelayEmitParamColorAlpha(f32 alpha)
+    {
+        auto* event = static_cast<EventELink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mDelayEmitParam.color.a = alpha;
+            event->mDelayEmitParam.flag1.setBit(1);
+        }
+    }
+
     sead::Vector3f setMtxUp(const sead::Vector3f&, const sead::Vector3f&, f32);
     HandleELink* setMtxZ(const sead::Vector3f&, const sead::Vector3f&, f32);
 };
