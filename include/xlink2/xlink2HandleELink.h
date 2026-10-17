@@ -131,6 +131,17 @@ public:
         }
     }
 
+    // Inline-only in the original; name is a guess. Rainbow1271458 repeats
+    // this color assignment/flag update for both its main and mirror events.
+    void setDelayEmitParamColor(const sead::Color4f& color)
+    {
+        auto* event = static_cast<EventELink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mDelayEmitParam.color = color;
+            event->mDelayEmitParam.flag1.setBit(0);
+        }
+    }
+
     /// Sets the delay emit colour alpha and flag1 bit 1 (inline-only in the original: StasisMgr
     /// 0x710067ffbc stores it at the event's +0xa4 and ORs 2 into the word at +0x180).
     void setDelayEmitParamColorAlpha(f32 alpha)
