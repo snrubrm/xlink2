@@ -13,10 +13,13 @@ class EventELink : public Event {
 public:
     ~EventELink() override = default;
 
-    // Pointee of DelayEmitParam::_0xf8 (placeholder): GameSceneSubsys5 0x7100905f9c stores a float at +0x18.
+    // Pointee of DelayEmitParam::_0xf8 (placeholder): GameSceneSubsys5 0x7100905f9c stores a float at +0x18;
+    // XLinkEventCreateAction::oneShot_ 0x7100d35e2c sets bit 4 of the word at +0x20.
     struct DelayEmitParamUnkF8 {
         u8 _0[0x18];
         f32 _18;
+        u8 _1c[4];
+        u32 _20;
     };
 
     struct DelayEmitParam {
