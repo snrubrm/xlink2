@@ -131,6 +131,18 @@ public:
         }
     }
 
+    // Inline-only in the original; name is a guess. The emitters at
+    // 0x710126ea30/0x710126eab8/0x710126eb40/0x710126ebc8 and their calc paths
+    // repeat this guarded mask update on the existing delay-parameter object.
+    void setDelayEmitParamF8Flags(u32 flags)
+    {
+        auto* event = static_cast<EventELink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            if (event->mDelayEmitParam._0xf8)
+                event->mDelayEmitParam._0xf8->_20 |= flags;
+        }
+    }
+
     // Inline-only in the original; name is a guess. Rainbow1271458 repeats
     // this color assignment/flag update for both its main and mirror events.
     void setDelayEmitParamColor(const sead::Color4f& color)
