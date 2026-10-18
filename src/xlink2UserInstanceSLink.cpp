@@ -7,6 +7,7 @@
 #include <xlink2/xlink2UserResourceSLink.h>
 #include <aal/aalArbiter.h>
 #include <aal/aalSystemAccessor.h>
+#include <aal/aalSystem.h>
 
 namespace xlink2 {
 UserInstanceSLink::CreateArgSLink::CreateArgSLink(const char* name, IUser* iuser)
@@ -118,6 +119,14 @@ void UserInstanceSLink::fadeIfLoopSound()
 const ResourceAccessorSLink& UserInstanceSLink::getResourceAccessor() const 
 {
     return getResourceSLink()->getResourceAccessor();
+}
+
+void UserInstanceSLink::setAssetInfoReader(aal::IAssetInfoReadable* reader)
+{
+    mAssetInfoReader = reader;
+    if (aal::SystemAccessor::getSystem()->getLoopAssetListReader()->hasEntries())
+        return;
+    getResourceSLink()->solveIsLoop(reader);
 }
 
 UserResourceSLink* UserInstanceSLink::getResourceSLink() const 
