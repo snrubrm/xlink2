@@ -43,6 +43,8 @@ public:
     void makeDebugStringEvent(sead::BufferedSafeString* event_name, const sead::SafeString& filter_name) const override;
 
     u32 getDefaultGroup() const override;
+    // Inline-only in the original; eui::EffectLinkUser::initialize 0x71009cfb14 stores the byte +0xfa directly.
+    void setDefaultGroup(u8 group) { mDefaultGroup = group; }
 
     IEventCallbackELink* getEventCallback() const { return mEventCallback; }
 
