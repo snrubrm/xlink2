@@ -27,6 +27,9 @@ public:
 
     s32 getSoundHandle(sead::PtrArray<aal::Handle>*) const;
 
+    // Inline-only in the original; Reaction EC7BF8 reads the volume scale at +0x9c.
+    f32 getVolumeScale() const { return mVolumeScale; }
+
 private:
     friend class HandleSLink;
     // XLinkEventCreateAction::oneShot_ 0x7100d35e2c writes mBitFlag2 bit 8, mPosition and
