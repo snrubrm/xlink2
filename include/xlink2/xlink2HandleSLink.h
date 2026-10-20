@@ -71,6 +71,18 @@ public:
         }
     }
 
+    // Inline-only in the original; Reaction EC7D50/EC7B90/EC72A0 update
+    // EventSLink +0xa4 and bit 2 in both property flag words.
+    void setPitchScale(f32 scale)
+    {
+        auto* event = static_cast<EventSLink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mBitFlag2.setBit(2);
+            event->mPitchScale = scale;
+            event->mBitFlag3.setBit(2);
+        }
+    }
+
     /// Sets the low-pass filter scale of the event (inline-only in the original; name is a guess.
     /// ksys::snd 0x710100064c and 0x7101000838 store EventSLink +0xa8 and set bit 3 of both flag words).
     void setLpfScale(f32 scale)
