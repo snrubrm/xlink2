@@ -6,6 +6,11 @@
 #include "xlink2/xlink2UserInstanceELink.h"
 
 namespace uking::action { class XLinkEventCreateAction; }
+namespace ksys::act {
+class Actor;
+class Chemical;
+class Unk_71024e6428;
+}
 
 namespace xlink2 {
 class AssetExecutorELink;
@@ -15,14 +20,20 @@ class EventELink : public Event {
 public:
     ~EventELink() override = default;
 
-    // Pointee of DelayEmitParam::_0xf8 (placeholder): GameSceneSubsys5 0x7100905f9c stores a float at +0x18;
-    // XLinkEventCreateAction::oneShot_ 0x7100d35e2c sets bit 4 of the word at +0x20.
+    // Effect::eventCreate 0x71011b1c14 allocates this 0x70-byte record and
+    // installs it at event +0x190. Chemical state 0x7100e3b708 supplies the
+    // actor/chemical pointers and sets bit 3 of mFlags. Other fields stay opaque.
     struct DelayEmitParamUnkF8 {
-        u8 _0[0x18];
+        u8 _0[8];
+        ksys::act::Actor* mActor;
+        ksys::act::Chemical* mChemical;
         f32 _18;
         u8 _1c[4];
         u32 _20;
+        u32 mFlags;
+        u8 _28[0x70 - 0x28];
     };
+    static_assert(sizeof(DelayEmitParamUnkF8) == 0x70);
 
     struct DelayEmitParam {
         sead::Color4f color;
@@ -77,6 +88,7 @@ private:
     // XLinkEventCreateAction::oneShot_ 0x7100d35e2c ORs 0x10 into the word at +0x20 of the
     // object stored in DelayEmitParam::_0xf8 (event +0x190).
     friend class uking::action::XLinkEventCreateAction;
+    friend class ksys::act::Unk_71024e6428;
 
     DelayEmitParam mDelayEmitParam;
 };
