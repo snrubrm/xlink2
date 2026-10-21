@@ -48,7 +48,7 @@ public:
 
     void onFinalize_() override;
 
-    UserInstanceSLink* getUserInstance() { return static_cast<UserInstanceSLink*>(mpUserInstance); }
+    UserInstanceSLink* getUserInstance() const { return static_cast<UserInstanceSLink*>(mpUserInstance); }
     aal::Handle* getHandle() { return &mHandle; }
 
 private:

@@ -1,5 +1,10 @@
 #include "xlink2/xlink2AssetExecutorSLink.h"
 
+#include "xlink2/xlink2EventSLink.h"
+
+#include <aal/aalSettings.h>
+#include <aal/aalSystemAccessor.h>
+
 #include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2ResourceAccessorSLink.h"
 #include "xlink2/xlink2UserResourceSLink.h"
@@ -142,5 +147,48 @@ bool AssetExecutorSLink::isRequestReEmit() const
 void AssetExecutorSLink::onFinalize_() 
 {
     mpModelAssetConnection = nullptr;
+}
+// 0x7100bcf03c
+void AssetExecutorSLink::fadeBySystem()
+{
+    if (mpAssetCallTable == nullptr)
+        return;
+
+    auto* accessor =
+        static_cast<UserResourceSLink*>(getUserInstance()->getUserResource())->getAccessorPtr();
+    const ResAssetCallTable& asset = *mpAssetCallTable;
+    if (!accessor->isLoopAsset(asset) && !accessor->isAutoOneTimeFade(asset))
+        return;
+
+    if (mHandle.isActive())
+        fade(-1);
+    else
+        mContainerType = ContainerType_Asset;
+}
+
+// 0x7100bcef5c
+void AssetExecutorSLink::fade(s32 param_int)
+{
+    if (mHandle.isActive()) {
+        s32 fade = param_int;
+        if (fade < 0) {
+            auto* accessor =
+                static_cast<UserResourceSLink*>(getUserInstance()->getUserResource())->getAccessorPtr();
+            const f32 stop = accessor->getStopFrameWithOverwrite(
+                *mpAssetCallTable, reinterpret_cast<u64>(mpTriggerOverwriteParam), mpUserInstance);
+            fade = static_cast<s32>(stop + (stop >= 0.0f ? 0.5f : -0.5f));
+            if (fade == -1)
+                fade = 0;
+        }
+        mHandle.stop(fade * aal::SystemAccessor::getSettings()->mCalcTimeStep, 0.0f);
+    }
+    mContainerType = ContainerType_Sequence;
+}
+
+// 0x7100bcf008
+void AssetExecutorSLink::kill()
+{
+    mHandle.stop(-1.0f, 0.0f);
+    mContainerType = ContainerType_Asset;
 }
 }  // namespace xlink2
