@@ -1,5 +1,6 @@
 #include <xlink2/xlink2UserInstanceSLink.h>
 
+#include <xlink2/xlink2EventSLink.h>
 #include <xlink2/xlink2HandleSLink.h>
 #include <xlink2/xlink2HoldMgr.h>
 #include <xlink2/xlink2ILockProxy.h>
@@ -27,12 +28,6 @@ UserInstanceSLink::AssetLimiter::AssetLimiter(s32 num_param, sead::Heap* heap)
 UserInstanceSLink::AssetLimiter::~AssetLimiter()
 {
     mParamBuffer.freeBuffer();
-}
-
-void UserInstanceSLink::AssetLimiter::clear()
-{
-    for (int i {0}; i < mParamBuffer.size(); ++i)
-        mParamBuffer[i].assetExecutorPtrs.clear();
 }
 
 void UserInstanceSLink::AssetLimiter::initialize(s32 param_idx, const char* group_name, const ArrangeGroupParam& group_param)

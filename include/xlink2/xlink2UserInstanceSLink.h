@@ -42,7 +42,12 @@ public:
         virtual ~AssetLimiter();
         AssetLimiter(s32, sead::Heap*);
 
-        void clear();
+        // Inline in the original: UserInstanceSLink::onPostCalc_ 0x7100bbec0c inlines it.
+        void clear()
+        {
+            for (int i = 0; i < mParamBuffer.size(); ++i)
+                mParamBuffer[i].assetExecutorPtrs.clear();
+        }
         void append(const Event&, const ResourceAccessorSLink&, User*);
 
         void limit();
