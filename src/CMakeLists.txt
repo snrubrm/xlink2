@@ -22,6 +22,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}LockProxy.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}MonoContainer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}OneEmitterMgr.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}PtclResourceAccessorELink.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ModelAssetConnection.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}OuterLockProxy.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ParamDefineTable.cpp
