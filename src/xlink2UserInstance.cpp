@@ -304,7 +304,7 @@ bool UserInstance::checkAndErrorCallWithoutSetup_(const char* fmt, ...) const
     return false;
 }
 
-void UserInstance::printLogSearchAsset_(bool /*unused*/, const char* /*unused*/, ...) const {}
+void UserInstance::printLogSearchAsset_(const Event& /*unused*/, const char* /*unused*/, ...) const {}
 
 void UserInstance::emitImpl(const Locator& locator, Handle* handle)
 {

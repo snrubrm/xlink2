@@ -44,7 +44,7 @@ bool BlendContainer::callAllChildContainer_()
         const char* container_name_child {user_instance->getContainerTypeName(*asset_ctb_item).cstr()};
         const char* key_name_child {solveOffset<char>(asset_ctb_item->keyNamePos)};
 
-        user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s] (idx=%d)", container_name, key_name, container_name_child, key_name_child, j);
+        user_instance->printLogSearchAsset_(*event, "%s[%s] -> %s[%s] (idx=%d)", container_name, key_name, container_name_child, key_name_child, j);
 
         ContainerBase* child_container {createChildContainer_(*asset_ctb_item, tmp_base)};
         if (child_container != nullptr)

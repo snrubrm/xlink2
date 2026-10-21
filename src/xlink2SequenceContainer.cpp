@@ -63,7 +63,7 @@ bool SequenceContainer::callChildSequence_(s32 idx)
     const char* container_child_name {user_instance->getContainerTypeName(*asset_ctb_item).cstr()};
     const char* key_name_child {solveOffset<char>(asset_ctb_item->keyNamePos)};
 
-    user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s] (idx=%d)", container_name, key_name, container_child_name, key_name_child, idx);
+    user_instance->printLogSearchAsset_(*event, "%s[%s] -> %s[%s] (idx=%d)", container_name, key_name, container_child_name, key_name_child, idx);
 
     return createChildContainer_(*asset_ctb_item, nullptr);
 

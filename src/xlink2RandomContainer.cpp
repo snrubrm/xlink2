@@ -50,7 +50,20 @@ bool RandomContainer::start()
                 weight += condition_param->weight;
             
                 if (random_f32 < weight)
-                    return createChildContainer(*asset_ctb_item, user_instance, nullptr) != nullptr;
+                {
+                    Event* event {mpEvent};
+
+                    const char* container_name {user_instance->getContainerTypeName(*mpAssetCallTable).cstr()};
+                    const char* key_name {solveOffset<char>(mpAssetCallTable->keyNamePos)};
+
+                    const char* container_child_name {user_instance->getContainerTypeName(*asset_ctb_item).cstr()};
+                    const char* key_name_child {solveOffset<char>(asset_ctb_item->keyNamePos)};
+
+                    user_instance->printLogSearchAsset_(*event, "%s[%s] -> %s[%s]", container_name,
+                                                        key_name, container_child_name, key_name_child);
+
+                    return createChildContainer_(*asset_ctb_item, nullptr) != nullptr;
+                }
             }
             condition = j < child_end_idx;
         }

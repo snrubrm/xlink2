@@ -89,7 +89,7 @@ public:
     void searchAndEmitImpl(const char*, Handle*);
 
     bool checkAndErrorCallWithoutSetup_(const char*, ...) const;
-    void printLogSearchAsset_(bool, const char*, ...) const;
+    void printLogSearchAsset_(const Event&, const char*, ...) const;
     void emitImpl(const Locator&, Handle*);
 
     void printLogEmitFailed(const char*, const char*, ...) const;
