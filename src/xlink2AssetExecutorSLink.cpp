@@ -3,6 +3,8 @@
 #include "xlink2/xlink2EventSLink.h"
 
 #include <aal/aalSettings.h>
+#include <aal/aalSoundSource.h>
+#include <aal/aalSpatialCalculator.h>
 #include <aal/aalSystemAccessor.h>
 
 #include "xlink2/xlink2ResourceAccessor.h"
@@ -148,6 +150,20 @@ void AssetExecutorSLink::onFinalize_()
 {
     mpModelAssetConnection = nullptr;
 }
+// 0x7100bd087c
+void AssetExecutorSLink::appendAalInfoStr(sead::BufferedSafeString* str)
+{
+    aal::SoundSource* source = mHandle.getSoundSource();
+    if (source == nullptr)
+        return;
+
+    const aal::SpatialCalculator::Result* result = source->getSpatialCalcResult(0);
+    if (result == nullptr)
+        return;
+
+    str->appendWithFormat(" 3Ddist=%.2f, 3Dvol=%.2f\n", result->_8c, result->volume);
+}
+
 // 0x7100bcf03c
 void AssetExecutorSLink::fadeBySystem()
 {
