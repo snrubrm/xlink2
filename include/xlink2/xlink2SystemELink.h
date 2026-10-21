@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xlink2/xlink2OneEmitterMgr.h"
+
 #include "xlink2/xlink2GroupTable.h"
 #include "xlink2/xlink2IEventCallbackELink.h"
 #include "xlink2/xlink2System.h"
@@ -68,6 +70,7 @@ public:
     IEventCallbackELink* getEventCallback() const { return mEventCallback; }
     // Inline-only in the original; OneEmitterMgr::createOneEmitterInstance 0x7100bcdf6c reads it.
     sead::ptcl::PtclSystem* getPtclSystem() const { return mPtclSystem; }
+    OneEmitterMgr* getOneEmitterMgr() { return &mOneEmitterMgr; }
 
 private:
     sead::ptcl::PtclSystem* mPtclSystem;
@@ -93,6 +96,9 @@ private:
     u32 _38;
     u32 _39;
     u32 _40;
+    u8 _864[0x870 - 0x864];
+    // UserResourceELink::releaseOneEmitterInstance_ 0x7100bbbeb0 passes getSystem() + 0x870.
+    OneEmitterMgr mOneEmitterMgr;
 };
 // static_assert(sizeof(SystemELink) == 0x69490, "Wrong size for 'xlink2::SystemELink'");
 

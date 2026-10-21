@@ -1,4 +1,5 @@
 #include <xlink2/xlink2UserResourceELink.h>
+#include <xlink2/xlink2SystemELink.h>
 
 #include <xlink2/xlink2Util.h>
 
@@ -56,7 +57,6 @@ void UserResourceELink::freeResourceParam_(UserResourceParam* param)
     }
 }
 
-// WIP: Needs more of SystemELink and possibly OneEmitterMgr
 void UserResourceELink::releaseOneEmitterInstance_(UserResourceParamELink* param, const ParamDefineTable* pdt)
 {
     if (_0x28 && mResMode != ResMode::Editor) {
@@ -70,13 +70,13 @@ void UserResourceELink::releaseOneEmitterInstance_(UserResourceParamELink* param
                     auto* res_param {mAccessor.getResParamFromAssetParamPos(asset_ctb_item.paramStartPos, 1)};
                     const char* runtime_asset_name {};
                     if (res_param != nullptr)
-                        runtime_asset_name = solveOffset<const char>(res_param->getValue());
+                        runtime_asset_name = solveOffset<const char>(res_param->getValue() + name_table_pos);
                     else
                        runtime_asset_name = pdt->getAssetParamDefaultValueString(1);
 
-                    if (runtime_asset_name != nullptr && getAccessor().isUseOneEmitter(asset_ctb_item)) {
-                        // OneEmitterMgr* one_emitter_mgr {getSystem()->getOneEmitterMgr()};
-                        // one_emitter_mgr->releaseOneEmitterInstance(runtime_asset_name);
+                    if (runtime_asset_name != nullptr && mAccessor.isUseOneEmitter(asset_ctb_item)) {
+                        auto* system {static_cast<SystemELink*>(getSystem())};
+                        system->getOneEmitterMgr()->releaseOneEmitterInstance(runtime_asset_name);
                     }
                 }
             }
