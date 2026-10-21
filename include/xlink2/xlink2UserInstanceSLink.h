@@ -79,6 +79,8 @@ public:
     UserResourceSLink* getResourceSLink() const;
 
     void setupEmitter(const ResAssetCallTable&);
+    /// Inline in the original: ksys::snd 0x710105e3d0 reads the emitter at +0xf8 after setAssetInfoReader.
+    aal::Emitter* getEmitter() const { return mEmitter; }
 
     void onPostCalc_() override;
     void onDestroy_() override;

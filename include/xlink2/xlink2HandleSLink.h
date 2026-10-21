@@ -94,6 +94,29 @@ public:
             event->mBitFlag3.setBit(3);
         }
     }
+
+    // Inline-only in the original; names follow the EventSLink fields. ksys::snd::ExpressionSoundCtrl
+    // 0x710104fb40 stores EventSLink +0xb4 (bit 6 of both flag words) and +0xb8 (bit 7).
+    void setBiquadType(u32 type)
+    {
+        auto* event = static_cast<EventSLink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mBiquadType = type;
+            event->mBitFlag2.setBit(6);
+            event->mBitFlag3.setBit(6);
+        }
+    }
+
+    void setBiquadValue(f32 value)
+    {
+        auto* event = static_cast<EventSLink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mBiquadValue = value;
+            event->mBitFlag2.setBit(7);
+            event->mBitFlag3.setBit(7);
+        }
+    }
+
     void setMatrix(const sead::Matrix34f& matrix)
     {
         auto* event = static_cast<EventSLink*>(getEvent());

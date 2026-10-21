@@ -182,6 +182,8 @@ public:
     DebugOperationParam* debugOperationParamEditor() { return &mDebugOperationParamEditor; }
 
     bool isCallEnabled() const { return mIsCallEnabled; }
+    // The game's ksys::snd::SoundMgr::sub_71011FB69C 0x71011fb69c stores the frame-wait step rate it passes to aal here.
+    void set_0x84(f32 value) { _0x84 = value; }
 
     ResourceBuffer* getResourceBuffer() { return mResourceBuffer; }
 
@@ -241,7 +243,9 @@ protected:
     s32 _0x70 {-1};
     bool mIsCallEnabled {true};
     sead::Heap* mUserCreateHeap {};
-    f32 _0x80 {1.0f};
+    // System() stores 0 at +0x80 and 1.0 at +0x84 in one 8-byte store.
+    u32 _0x80 {};
+    f32 _0x84 {1.0f};
     sead::PtrArray<User> mGlobalPropertyTriggerUserList;
     sead::Random mRandom;
     sead::Heap* mContainerHeap;
