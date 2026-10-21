@@ -66,6 +66,8 @@ public:
     ILockProxy* getModuleLockObj() const override;
 
     IEventCallbackELink* getEventCallback() const { return mEventCallback; }
+    // Inline-only in the original; OneEmitterMgr::createOneEmitterInstance 0x7100bcdf6c reads it.
+    sead::ptcl::PtclSystem* getPtclSystem() const { return mPtclSystem; }
 
 private:
     sead::ptcl::PtclSystem* mPtclSystem;
