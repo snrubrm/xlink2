@@ -108,6 +108,17 @@ public:
         }
     }
 
+    /// Sets the delay emit vector `_0xd0` (event +0x168) and flag1 bit 20 (inline-only in the original; the name is a
+    /// placeholder, requested for the grass fire element 0x71012de95c).
+    void setDelayEmitParam0xD0(const sead::Vector3f& value)
+    {
+        auto* event = static_cast<EventELink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            event->mDelayEmitParam._0xd0 = value;
+            event->mDelayEmitParam.flag1.setBit(20);
+        }
+    }
+
     /// Sets the delay emit parameter `_0x78` (with `_0x74` = 1) and flag1 bit 10 (inline-only in the original; the
     /// name is a placeholder, requested for GameSceneSubsys5 0x7100905f9c).
     void setDelayEmitParam0x78(f32 value)

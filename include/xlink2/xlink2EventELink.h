@@ -52,8 +52,8 @@ public:
         u8 _0x84[44];
         sead::Color4f color0;
         sead::Color4f color1;
-        u8 _0xd0[8];
-        u32 _0xd8;
+        // A vector set with flag1 bit 20 (grass fire element 0x71012de95c stores (1.125, 1.125, 1.125)).
+        sead::Vector3f _0xd0;
         s32 _0xdc;
         bool _0xe0;
         s32 particleCount;
