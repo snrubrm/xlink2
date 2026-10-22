@@ -18,6 +18,22 @@ public:
         user_instance->searchAndHold(asset_key_name, this);
     }
 
+    /// Detaches this event's delayed-emit record from its actor / chemical owners. Inline-only in the
+    /// original (name is a guess): Unk_7102450410::Entry's destructor (0x71007083b4) inlines exactly
+    /// the event/create-id guard, the record pointer at event +0x190 and 16 zero bytes at record +8.
+    /// It is not part of the handle destructor — Unk_71012419b4 holders such as MoonMove (D1
+    /// 0x71001e6df8) and OnStateXLinkCreate (D1 0x7100631c0c) match with no teardown.
+    void releaseDelayEmitParamMaybe()
+    {
+        auto* event = static_cast<EventELink*>(getEvent());
+        if (event && event->getCreateId() == getCreateId()) {
+            if (auto* param = event->mDelayEmitParam._0xf8) {
+                param->mActor = nullptr;
+                param->mChemical = nullptr;
+            }
+        }
+    }
+
     // Inline-only in the original; the debug string establishes the member name.
     // Original 129864 and 7086f4 repeat the event/create-id check, logging and system fade.
     void fadeIfLoopEffect()
