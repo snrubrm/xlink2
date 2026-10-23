@@ -96,11 +96,13 @@ ContainerBase* ContainerBase::createChildContainer_(const ResAssetCallTable& ass
         child_container->destroy();
         child_container = nullptr;
     }
-    else if (!container) {
-        mpChild = child_container;
-    }
     else {
-        container->mpNext = child_container;
+        ContainerBase** slot;
+        if (!container)
+            slot = &mpChild;
+        else
+            slot = &container->mpNext;
+        *slot = child_container;
     }
 
     return child_container;
