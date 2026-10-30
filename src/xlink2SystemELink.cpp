@@ -6,6 +6,17 @@
 
 namespace xlink2 {
 
+SystemELink* SystemELink::sInstance = nullptr;
+SystemELink::SingletonDisposer_* SystemELink::SingletonDisposer_::sStaticDisposer = nullptr;
+
+SystemELink::SingletonDisposer_::~SingletonDisposer_() {
+    if (this == sStaticDisposer) {
+        sStaticDisposer = nullptr;
+        SystemELink::sInstance->~SystemELink();
+        SystemELink::sInstance = nullptr;
+    }
+}
+
 Handle* SystemELink::allocHandle(sead::Heap* heap) {
     return new (heap, 8) Handle;
 }
